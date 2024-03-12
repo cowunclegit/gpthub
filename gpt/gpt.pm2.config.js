@@ -1,0 +1,1 @@
+module.exports = {"apps":[{"name":"test","cmd":"test.py","args":"8001","interpreter":"python3"}]}
