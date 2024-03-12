@@ -1,1 +1,1 @@
-module.exports = {"apps":[{"name":"gpt_df8b3ee0-e059-11ee-8eb6-e55da244248d","cmd":"test.py","args":"8000","interpreter":"python3"}]}
+module.exports = {"apps":[{"name":"gpt_9376b6f0-e0b4-11ee-b765-313ed79dc7e6","cmd":"test.py","args":"8000 flan-t5-kor","interpreter":"python3","info":{"uuid":"9376b6f0-e0b4-11ee-b765-313ed79dc7e6","name":"test","model":"flan-t5-kor","port":8000}}]}

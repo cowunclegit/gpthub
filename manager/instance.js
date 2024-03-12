@@ -1,9 +1,12 @@
 const fs = require('fs');
+const path = require('path');
 const uuid = require('uuid');
 const portfinder = require('portfinder');
 const { exec } = require('child_process');
 
 const GPT_PATH = './gpt';
+const MODEL_PATH = 'base';
+const INSTANCE_PATH = 'instance';
 const instances = [];
 
 const models = [{
@@ -25,7 +28,8 @@ function makePM2JSON() {
             name: 'gpt_' + instance.uuid,
             cmd: 'test.py',
             args: '' + instance.port + ' ' + instance.model,
-            interpreter: 'python3'
+            interpreter: 'python3',
+            info: instance
         });
     }
 
@@ -56,6 +60,20 @@ function findFreePort() {
     });
 }
 
+function copyModelToInstance(model, uuid) {
+    const modelPath = path.join(GPT_PATH, MODEL_PATH, model);
+    const instancePath = path.join(GPT_PATH, INSTANCE_PATH, uuid);
+    fs.cp(modelPath, instancePath, {recursive: true}, (err) => {
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log('success');
+        }
+    });
+}
+
+//Exports
 function getInstances() {
     return instances;
 }
@@ -76,6 +94,9 @@ function cloneInstance(options, callback) {
         }
 
         instances.push(newInstance);
+
+        copyModelToInstance(options.model, newInstance.uuid);
+
         makePM2JSON();
         callback(null, newInstance);
     }).catch(err => {
@@ -112,7 +133,7 @@ function stopInstance(uuid) {
 function train(uuid, dataset) {
     const dataPath = GPT_PATH + '/' + uuid + '.csv';
     console.log(dataPath);
-    
+
     exec('python3 traintest.py ' + uuid, {
         cwd: './gpt'
     }, (err, stdout, stderr) => {
@@ -125,9 +146,20 @@ function train(uuid, dataset) {
     });
 }
 
+function checkExistInstance(uuid){
+    for (const item of instances) {
+        if(item.uuid === uuid){
+            return true;
+        }
+    }
+
+    return false;
+}
+
 module.exports.getModelList = getModelList;
 module.exports.getInstances = getInstances;
 module.exports.cloneInstance = cloneInstance;
 module.exports.startInstance = startInstance;
 module.exports.stopInstance = stopInstance;
 module.exports.train = train;
+module.exports.checkExistInstance = checkExistInstance;

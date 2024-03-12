@@ -19,6 +19,11 @@ router.post('/', function (req, res, next) {
 
 router.post('/start', function (req, res, next) {
     const uuid = req.body.uuid;
+
+    if(!manager.instance.checkExistInstance(uuid)){
+        return res.status(404).json(new Error('Not found'));
+    }
+
     manager.instance.startInstance(uuid);
     res.json({
         result: 'ok'
@@ -27,6 +32,11 @@ router.post('/start', function (req, res, next) {
 
 router.post('/stop', function (req, res, next) {
     const uuid = req.body.uuid;
+
+    if(!manager.instance.checkExistInstance(uuid)){
+        return res.status(404).json(new Error('Not found'));
+    }
+
     manager.instance.stopInstance(uuid);
     res.json({
         result: 'ok'
@@ -35,6 +45,11 @@ router.post('/stop', function (req, res, next) {
 
 router.post('/train', function (req, res, next) {
     const uuid = req.body.uuid;
+
+    if(!manager.instance.checkExistInstance(uuid)){
+        return res.status(404).json(new Error('Not found'));
+    }
+
     const dataset = [];
     manager.instance.train(uuid, dataset);
     res.json({
