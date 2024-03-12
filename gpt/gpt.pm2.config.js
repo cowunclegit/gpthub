@@ -1,1 +1,1 @@
-module.exports = {"apps":[{"name":"test","cmd":"test.py","args":"8001","interpreter":"python3"}]}
+module.exports = {"apps":[{"name":"gpt_df8b3ee0-e059-11ee-8eb6-e55da244248d","cmd":"test.py","args":"8000","interpreter":"python3"}]}
